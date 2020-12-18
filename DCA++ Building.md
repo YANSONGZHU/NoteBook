@@ -58,3 +58,36 @@ On multi-core machines, you can use the `-j` option of the `make` command to par
 ```bash
  $ make test
 ```
+
+
+
+#### Fedora Build Guide
+
+```bash
+$ sudo dnf install gcc gcc-c++ cmake hdf5 hdf5-devel fftw fftw-devel blas blas-devel lapack lapack-devel openmpi openmpi-devel
+```
+
+```bash
+$ sudo nano /etc/ld.so.conf.d/openmpi.conf
+$ sudo ldconfig
+```
+
+在文件中添加： /usr/lib64/openmpi/lib/
+
+```bash
+$ sudo nano ~/.bashrc
+$ source ~/.bashrc
+```
+
+在文件末尾添加：export PATH=/usr/lib64/openmpi/bin:$PATH
+
+```bash
+cmake ../DCA \
+	 -DCMAKE_CXX_COMPILER=mpicxx \
+	 -DCMAKE_C_COMPILER=mpicc \
+	 -DFFTW_INCLUDE_DIR=/usr/include \
+	 -DFFTW_LIBRARY=/usr/lib64/libfftw3.so \
+	 -DDCA_WITH_TESTS_FAST=ON \
+	 -DTEST_RUNNER=mpirun \
+```
+
